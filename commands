@@ -1,0 +1,448 @@
+https://chatgpt.com/share/676f7762-e508-800d-b6e8-0ede3b9393e9
+
+# When I was trying to download mpd file in mp4 format ( audio and video embedded ), there was no direct way. I followed chat gpt's instructions and it worked.
+
+# This is how I went about it:
+
+I can’t directly download files from a .mpd (MPEG-DASH) link, as it’s a streaming format designed for adaptive streaming rather than direct downloading. However, I can guide you on how to download it using tools like youtube-dl, yt-dlp, or other video downloading software.
+
+Using yt-dlp (Recommended Method)
+Install yt-dlp
+
+If you don’t have it installed, download it from yt-dlp GitHub or install it via pip:
+bash
+
+Copy code
+pip install yt-dlp
+
+Download the Video
+Open your terminal/command prompt and run:
+
+bash
+
+Copy code
+yt-dlp -f best -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+
+Upload to YouTube
+Once downloaded, you can upload the video.mp4 file directly to YouTube.
+
+If you encounter any issues or prefer a different approach, let me know, and I’ll assist further!
+
+
+
+# It wasn't taking best format, giving error
+
+You said:
+C:\Users\isha>yt-dlp -f best -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+WARNING: "-f best" selects the best pre-merged format which is often not the best option.
+         To let yt-dlp download and merge the best available formats, simply do not pass any format selection.
+         If you know what you are doing and want only the best pre-merged format, use "-f b" instead to suppress this warning
+[generic] Extracting URL: https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd
+[generic] index: Downloading webpage
+WARNING: [generic] Falling back on generic information extractor
+[generic] index: Extracting information
+ERROR: [generic] index: Requested format is not available. Use --list-formats for a list of available formats
+
+ChatGPT said:
+ChatGPT
+It seems that yt-dlp couldn’t automatically select a format from the .mpd link. Let’s manually list the available formats and then select the appropriate one.
+
+Step 1: List Available Formats
+Run this command:
+
+cmd
+Copy code
+yt-dlp --list-formats "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+This will display a list of all available video and audio formats.
+
+Step 2: Select the Best Format
+After running the above command:
+
+Look for the best video + audio format (usually marked with video+audio or the highest resolution/bitrate).
+Use the format code from the list in the following command:
+cmd
+Copy code
+yt-dlp -f <format-code> -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+Replace <format-code> with the best available format code from the list.
+
+Let me know the output from --list-formats if you're unsure which format to choose, and I’ll guide you further!
+
+
+
+You said:
+which is format out of these:
+ID EXT RESOLUTION │   TBR PROTO │ VCODEC        VBR ACODEC     ABR ASR MORE INFO
+───────────────────────────────────────────────────────────────────────────────────────────
+0  m4a audio only │   68k dash  │ audio only        mp4a.40.2  68k 48k DASH audio, m4a_dash
+1  mp4 256x144    │   63k dash  │ avc1.64000c   63k video only         DASH video, mp4_dash
+2  mp4 426x240    │  170k dash  │ avc1.640015  170k video only         DASH video, mp4_dash
+5  mp4 426x240    │  334k dash  │ avc1.640015  334k video only         DASH video, mp4_dash
+6  mp4 640x360    │  639k dash  │ avc1.64001e  639k video only         DASH video, mp4_dash
+4  mp4 960x540    │  867k dash  │ avc1.64001f  867k video only         DASH video, mp4_dash
+3  mp4 960x540    │ 1681k dash  │ avc1.64001f 1681k video only         DASH video, mp4_dash
+7  mp4 1280x720   │ 3163k dash  │ avc1.64001f 3163k video only         DASH video, mp4_dash
+
+# Manual selection of format was needed
+
+ChatGPT said:
+ChatGPT
+To download both video and audio together in the best quality, you’ll need to combine the best video format and the audio format manually.
+
+Best Video + Audio Combination
+Video: ID 7 (1280x720, 3163k bitrate)
+Audio: ID 0 (audio only, 68k bitrate)
+Download Command:
+Run this command to download and merge them:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+This will download the highest quality video (ID 7) and audio (ID 0) streams and merge them into a single video.mp4 file.
+
+Let me know if you encounter any issues!
+
+
+You said:
+C:\Users\isha>yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+[generic] Extracting URL: https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd
+[generic] index: Downloading webpage
+WARNING: [generic] Falling back on generic information extractor
+[generic] index: Extracting information
+[info] index: Downloading 1 format(s): 7+0
+WARNING: You have requested merging of multiple formats but ffmpeg is not installed. The formats won't be merged
+[dashsegments] Total fragments: 836
+[download] Destination: video.f7.mp4
+ChatGPT said:
+ChatGPT
+The issue here is that ffmpeg is not installed on your system, and yt-dlp cannot merge the audio and video streams without it. Follow these steps to resolve the problem:
+
+
+# ffmpeg installation steps:
+
+Step 1: Install FFmpeg
+Download FFmpeg:
+Go to the official FFmpeg download page.
+Alternatively, you can directly download it from FFmpeg Builds.
+
+Extract the Archive:
+Extract the downloaded file to a folder (e.g., C:\ffmpeg).
+
+Add FFmpeg to System Path:
+
+Open System Properties → Advanced System Settings → Environment Variables.
+Under System Variables, find Path and click Edit.
+Add: C:\ffmpeg\bin (or wherever you extracted FFmpeg).
+Click OK and restart your Command Prompt.
+Verify Installation:
+Run this command in Command Prompt:
+
+cmd
+Copy code
+ffmpeg -version
+You should see version details if it’s installed correctly.
+
+Step 2: Redownload and Merge the Video and Audio
+Run the same command again:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+This time, yt-dlp will automatically use ffmpeg to merge the video and audio files.
+
+Let me know if you encounter any further issues!
+
+# Adding ffmpeg to system path variable, needs to be with a lot of attention :) Took some time to figure out-
+
+You said:
+can you guide where i find system properties mentioned in 3
+ChatGPT said:
+ChatGPT
+Sure! Here’s how to find System Properties and add FFmpeg to your system Path variable:
+
+Step 1: Open System Properties
+For Windows 10/11:
+
+Press Win + R to open the Run dialog.
+Type: sysdm.cpl
+Press Enter.
+Alternate Method:
+
+Right-click on This PC or My Computer on the desktop or in File Explorer.
+Click on Properties.
+Select Advanced system settings from the left sidebar.
+Step 2: Edit Environment Variables
+In the System Properties window, click on the Advanced tab.
+Click on the Environment Variables... button at the bottom.
+Step 3: Add FFmpeg to Path
+In the System Variables section, scroll down and select Path, then click Edit….
+Click New and add the path to the bin folder of FFmpeg. Example:
+makefile
+Copy code
+C:\ffmpeg\bin
+Click OK on all windows to save changes.
+Step 4: Verify FFmpeg Installation
+Open Command Prompt and type:
+cmd
+Copy code
+ffmpeg -version
+If installed correctly, it will display version information.
+You’re all set! Now rerun your yt-dlp command. Let me know if you hit any snags! 😊
+
+
+
+You said:
+C:\ffmpeg\ffmpeg-7.1>ffmpeg -version
+'ffmpeg' is not recognized as an internal or external command,
+operable program or batch file.
+ChatGPT said:
+ChatGPT
+It looks like the ffmpeg path isn’t set correctly in your system variables. Let’s carefully go through the process again step by step:
+
+✅ Step 1: Verify the FFmpeg Path
+Make sure the ffmpeg.exe file exists in:
+
+makefile
+Copy code
+C:\ffmpeg\ffmpeg-7.1\bin
+If it’s not in a bin folder, note the exact path where ffmpeg.exe is located (e.g., C:\ffmpeg\ffmpeg-7.1).
+
+✅ Step 2: Add FFmpeg to System Path
+Press Win + R, type sysdm.cpl, and press Enter to open System Properties.
+Go to the Advanced tab.
+Click on Environment Variables....
+Under System Variables, find the Path variable and select it. Click Edit....
+Click New and add one of these paths:
+If ffmpeg.exe is in the bin folder:
+makefile
+Copy code
+C:\ffmpeg\ffmpeg-7.1\bin
+If it’s directly in the folder:
+makefile
+Copy code
+C:\ffmpeg\ffmpeg-7.1
+Click OK on all windows to save.
+✅ Step 3: Verify Installation
+Open a new Command Prompt window (important: Restart CMD to apply changes).
+Type:
+cmd
+Copy code
+ffmpeg -version
+You should see version details of FFmpeg.
+✅ Step 4: Retry Your yt-dlp Command
+If everything works, rerun your original command:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+If you encounter any issues, let me know what happened, and we’ll sort it out! 🚀
+
+# ffmpeg was not installed from proper source-
+
+You said:
+ffmpeg.exe is not found
+ChatGPT said:
+ChatGPT
+If ffmpeg.exe is missing, it seems you may have downloaded the wrong archive or missed extracting it properly. Let’s fix this step by step:
+
+✅ Step 1: Download FFmpeg Correctly
+Go to the official FFmpeg builds page:
+FFmpeg Builds on GitHub
+
+Download:
+
+Architecture: Windows 64-bit (or 32-bit if your system is 32-bit).
+Version: git-full.
+Format: .zip.
+Extract the .zip file to:
+
+makefile
+Copy code
+C:\ffmpeg
+After extraction, the structure should look like this:
+
+# check if file exists in bin like follows:
+
+makefile
+Copy code
+C:\ffmpeg\bin\ffmpeg.exe
+✅ Step 2: Add FFmpeg to System Path
+Open Run (Win + R), type sysdm.cpl, and press Enter.
+Go to the Advanced tab → Click Environment Variables.
+Under System Variables, find Path → Click Edit.
+Add this path:
+makefile
+Copy code
+C:\ffmpeg\bin
+Click OK on all windows.
+✅ Step 3: Verify Installation
+Open Command Prompt and run:
+cmd
+Copy code
+ffmpeg -version
+You should see version details of FFmpeg.
+✅ Step 4: Retry yt-dlp Command
+Now retry your yt-dlp command:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+This should work smoothly now. If you encounter any more issues, let me know! 🚀
+
+
+# Ready to download mpd files. Every file had to be checked for formats as they were different and accordingly downloaded with AV combo.
+
+You said:
+
+C:\Users\isha>yt-dlp -f "7+0" -o "video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+[generic] Extracting URL: https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd
+[generic] index: Downloading webpage
+WARNING: [generic] Falling back on generic information extractor
+[generic] index: Extracting information
+[info] index: Downloading 1 format(s): 7+0
+[download] video.f7.mp4 has already been downloaded
+[download] 100% of  398.27MiB
+[download] video.f0.m4a has already been downloaded
+[download] 100% of   39.37MiB
+[Merger] Merging formats into "video.mp4"
+Deleting original file video.f7.mp4 (pass -k to keep)
+Deleting original file video.f0.m4a (pass -k to keep)
+ChatGPT said:
+ChatGPT
+Great! 🎉 The video and audio streams have been successfully downloaded and merged into video.mp4.
+
+✅ What’s Next?
+You’ll find the merged video file in your C:\Users\isha directory.
+You can now upload video.mp4 to YouTube or use it as needed.
+If you encounter any issues with playback or the upload, let me know. Happy streaming! 🚀😊
+
+
+# Date of file in downloads showed an old date, had to be found using path: 
+
+You said:
+i am not able to find the file
+ChatGPT said:
+ChatGPT
+Let’s locate your video.mp4 file step by step:
+
+✅ Step 1: Search for the File
+Open File Explorer.
+In the search bar (top-right corner), type:
+css
+Copy code
+video.mp4
+Wait for Windows to search your entire system. It may take a few moments.
+✅ Step 2: Check the Default Directory
+By default, yt-dlp saves files to the current working directory. Since you ran the command from:
+
+makefile
+Copy code
+C:\Users\isha
+Open File Explorer.
+Navigate to:
+makefile
+Copy code
+C:\Users\isha
+Look for video.mp4.
+✅ Step 3: Verify with Command Prompt
+Open Command Prompt and run this command:
+
+cmd
+Copy code
+dir C:\Users\isha\video.mp4 /s
+This will search for video.mp4 within the C:\Users\isha directory and its subfolders.
+
+✅ Step 4: Re-Specify Output Location (if not found)
+If you still can’t find it, re-run the download command and explicitly set the path:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "C:\Users\isha\Downloads\video.mp4" "https://internal-vod.sadhguru.org/sessions/ab9f5b3c-d62b-4040-9efa-6f94d48ee31b/vod/index.mpd"
+This will ensure the file is saved directly to your Downloads folder.
+
+Let me know how it goes! 😊
+
+You said:
+C:\Users\isha>yt-dlp -f "7+0" -o "C:\Users\isha\Downloads\sp_hin.mp4" "https://internal-vod.sadhguru.org/sessions/bc9163
+23-f1ad-4682-b4d8-276b242b53b7/vod/index.mpd"
+[generic] Extracting URL: https://internal-vod.sadhguru.org/sessions/bc916323-f1ad-4682-b4d8-276b242b53b7/vod/index.mpd
+[generic] index: Downloading webpage
+WARNING: [generic] Falling back on generic information extractor
+[generic] index: Extracting information
+[info] index: Downloading 1 format(s): 7
+[download] C:\Users\isha\Downloads\sp_hin.mp4 has already been downloaded
+[download] 100% of  401.47MiB
+ChatGPT said:
+ChatGPT
+It looks like the file sp_hin.mp4 has already been downloaded successfully to your Downloads folder at the specified path:
+
+makefile
+Copy code
+C:\Users\isha\Downloads\sp_hin.mp4
+What to do next:
+Check your Downloads folder: Open File Explorer and navigate to C:\Users\isha\Downloads to find the file.
+If you still can’t locate it, try opening the file directly from there or perform a search for sp_hin.mp4 in the Downloads folder.
+Let me know if it’s still missing! 😊
+
+You said:
+there's no audio
+ChatGPT said:
+ChatGPT
+It seems that the audio file might not have been merged properly, possibly because yt-dlp didn’t download or merge the audio stream correctly. Let's try fixing that.
+
+✅ Step 1: Check Available Formats Again
+First, let's confirm if both video and audio streams are available.
+
+Run the following command to list all available formats for the stream:
+
+cmd
+Copy code
+yt-dlp --list-formats "https://internal-vod.sadhguru.org/sessions/bc916323-f1ad-4682-b4d8-276b242b53b7/vod/index.mpd"
+Check the output to verify that both video and audio streams are listed. We need to confirm the correct audio format ID.
+
+✅ Step 2: Redownload and Merge Video + Audio
+If the audio format is missing or not properly merged, we can try downloading and merging the streams again:
+
+Manually select audio and video formats:
+From the list above, identify the best audio format (usually the one labeled with m4a or mp4a codec).
+Select the best video format (e.g., the highest resolution).
+For example, if:
+
+Video is ID 7 (1280x720),
+Audio is ID 0 (m4a audio),
+Use the following command to explicitly download and merge them:
+
+cmd
+Copy code
+yt-dlp -f "7+0" -o "C:\Users\isha\Downloads\sp_hin.mp4" "https://internal-vod.sadhguru.org/sessions/bc916323-f1ad-4682-b4d8-276b242b53b7/vod/index.mpd"
+✅ Step 3: Ensure FFmpeg is Available for Merging
+Make sure FFmpeg is working to merge video and audio. If it’s not installed or not recognized, we can’t merge the streams. If it hasn’t been added to your PATH, follow the steps I provided earlier to set it up.
+
+Let me know the result:
+Once you’ve confirmed the formats or tried downloading again, let me know if you face any issues with the audio, and I’ll guide you further! 😊
+
+You said:
+abort in cmd
+ChatGPT said:
+ChatGPT
+To abort a running command in Command Prompt, simply follow these steps:
+
+Press Ctrl + C on your keyboard while the command is running.
+This will stop the current process and return you to the command prompt.
+After Aborting:
+Once the process is aborted:
+
+Check whether any files were partially downloaded (you might see .m4a or .mp4 files in the directory you were working in).
+Re-run the command after ensuring that FFmpeg is properly installed and the formats are correctly selected.
+If you’re still experiencing issues after aborting, let me know, and I’ll assist you further! 😊
+
+
+
+
+
+
+
+
+
+
+
+
